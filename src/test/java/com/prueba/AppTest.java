@@ -8,6 +8,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -22,12 +27,16 @@ class AppTest {
     }
 
     @Test
-    void testApp() {
+    void testApp() throws InterruptedException {
         driver.get("https://www.google.com.ar");
         WebElement busqueda = driver.findElement(By.name("q"));
         busqueda.sendKeys("Selenium");
         WebElement boton = driver.findElement(By.name("btnK"));
-        boton.click();
+        boton.submit();
+        WebElement res = driver.findElement(By.partialLinkText("Selenium"));
+        res.click();
+        assertEquals(driver.getTitle(),"SeleniumHQ Browser Automation");
+        Thread.sleep(3000);
     }
 
     @AfterAll
