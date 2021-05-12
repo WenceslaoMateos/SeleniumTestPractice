@@ -4,29 +4,23 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Base {
     private WebDriver driver;
 
-    public Base(WebDriver driver) {
-        this.driver = driver;
+    public Base() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+
         WebDriverManager.chromedriver().setup();
-        this.driver = new ChromeDriver();
-        this.driver.manage().window().maximize();
+        this.driver = new ChromeDriver(options);
     }
 
     public WebDriver getDriver() {
         return this.driver;
-    }
-
-    public String getText(WebElement element) {
-        return element.getText();
-    }
-
-    public void setText(String inputText, By locator) {
-        this.driver.findElement(locator).sendKeys(inputText);
     }
 
     public WebElement findElement(By locator) {

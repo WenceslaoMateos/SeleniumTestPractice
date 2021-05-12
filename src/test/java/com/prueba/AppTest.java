@@ -1,30 +1,41 @@
 package com.prueba;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 class AppTest {
     private static WebDriver driver;
-    private static WebDriverWait wait;
     private static HomeNotLogged homenotlogged;
 
     @BeforeAll
     static void setUp() {
-        homenotlogged = new HomeNotLogged(driver);
         driver = homenotlogged.getDriver();
-        wait = new WebDriverWait(driver, 1);
+        homenotlogged = new HomeNotLogged();
         homenotlogged.navigate("https://testappautomation.herokuapp.com");
     }
 
     @Test
-    void testApp() {
-        wait.until(ExpectedConditions.titleIs("Homme Page"));
+    void titleValidation() {
+        assertEquals("Home Page", driver.getTitle());
+    }
+
+    @Test
+    void buttonExists() {
         homenotlogged.validateAssets(driver);
+    }
+
+    @Test
+    void textValidation() {
         homenotlogged.validateText();
+    }
+
+    @Test
+    void validateFooterFixed() {
+        homenotlogged.validateFooter();
     }
 
     @AfterAll

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class HomeNotLogged extends Base {
     private By logginbutton = By.id("loginBTN");
@@ -12,10 +13,6 @@ public class HomeNotLogged extends Base {
     private By formlink = By.linkText("Testing Forms");
     private By notloggedtitle = By.id("notLoggedTitleTXT");
     private By notloggedscreen = By.id("notLoggedScreen");
-
-    public HomeNotLogged(WebDriver driver) {
-        super(driver);
-    }
 
     public void validateAssets(WebDriver driver) {
         assertTrue(isDisplayed(this.logginbutton));
@@ -26,8 +23,21 @@ public class HomeNotLogged extends Base {
     }
 
     public void validateText() {
-        assertEquals("Welcome to my Atomation Testing Site", this.findElement(By.id("notLoggedTitleTXT")).getText());
+        assertEquals("Welcome to my Automation Testing Site", this.findElement(By.id("notLoggedTitleTXT")).getText());
         assertEquals("Please click Login button to log into the application or sign up!",
                 this.findElement(By.id("notLoggedScreen")).getText());
+        assertEquals(
+                "Disclaimer: This project is a personal site meant to be used as a help test site to be able to perform some automation test on demand.",
+                this.findElement(By.id("footerbox")).getText());
+        assertEquals("Log In", this.findElement(By.id("loginBTN")).getText());
+    }
+
+    public void validateFooter() {
+        assertEquals(this.findElement(By.tagName("footer")).getCssValue("position"), "fixed");
+        assertEquals(this.findElement(By.tagName("footer")).getCssValue("bottom"), "0px");
+    }
+
+    public WebElement getLogginbutton(){
+        return this.findElement(this.logginbutton);
     }
 }
