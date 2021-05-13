@@ -38,6 +38,11 @@ class AppTest {
         homenotlogged.validateFooter();
     }
 
+    @Test
+    void validateHyperlinks() {
+        homenotlogged.validateHyperlinks();
+    }
+
     @AfterAll
     static void tearDown() throws InterruptedException {
         driver.quit();
