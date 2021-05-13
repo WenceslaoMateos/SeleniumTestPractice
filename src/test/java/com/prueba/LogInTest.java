@@ -12,11 +12,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class LogInTest {
     private static WebDriver driver;
+    private static WebDriverWait wait;
 
     @BeforeAll
     static void setUp() {
@@ -27,6 +30,7 @@ public class LogInTest {
         // Generamos y seteamos la instancia del navegador
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver(options);
+        wait = new WebDriverWait(driver, 3);
     }
 
     @BeforeEach
@@ -39,7 +43,7 @@ public class LogInTest {
     }
 
     @Test
-    void UserValidation1() throws InterruptedException {
+    void UserValidation1() {
         // Generamos el caso de error
         driver.findElement(By.id("username")).clear();
         driver.findElement(By.id("password")).clear();
@@ -49,17 +53,16 @@ public class LogInTest {
         // Hacemos el sleep para darle tiempo al navegador para hacer la gestion de
         // inicio de sesion, de esta forma, cuando pasan los 3 seg, estamos seguros que
         // alguien esta logueado o no
-        Thread.sleep(3000);
+        assertThrows(org.openqa.selenium.TimeoutException.class, () -> {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("logoutBTN")));
+        });
         // Al dar click en login, tenemos que verificar que la excepcion que ocurra es
         // por no encontrar el boton de logout, de esta forma estamos seguro que no
         // loguea exitosamente
-        assertThrows(org.openqa.selenium.NoSuchElementException.class, () -> {
-            driver.findElement(By.id("logoutBTN"));
-        });
     }
 
     @Test
-    void UserValidation2() throws InterruptedException {
+    void UserValidation2() {
         driver.findElement(By.id("username")).clear();
         driver.findElement(By.id("password")).clear();
         driver.findElement(By.id("username")).sendKeys("Username");
@@ -68,17 +71,16 @@ public class LogInTest {
         // Hacemos el sleep para darle tiempo al navegador para hacer la gestion de
         // inicio de sesion, de esta forma, cuando pasan los 3 seg, estamos seguros que
         // alguien esta logueado o no
-        Thread.sleep(3000);
+        assertThrows(org.openqa.selenium.TimeoutException.class, () -> {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("logoutBTN")));
+        });
         // Al dar click en login, tenemos que verificar que la excepcion que ocurra es
         // por no encontrar el boton de logout, de esta forma estamos seguro que no
         // loguea exitosamente
-        assertThrows(org.openqa.selenium.NoSuchElementException.class, () -> {
-            driver.findElement(By.id("logoutBTN"));
-        });
     }
 
     @Test
-    void UserValidation3() throws InterruptedException {
+    void UserValidation3() {
         driver.findElement(By.id("username")).clear();
         driver.findElement(By.id("password")).clear();
         driver.findElement(By.id("username")).sendKeys("lelapassano@gmail.com");
@@ -87,14 +89,14 @@ public class LogInTest {
         // Hacemos el sleep para darle tiempo al navegador para hacer la gestion de
         // inicio de sesion, de esta forma, cuando pasan los 3 seg, estamos seguros que
         // alguien esta logueado o no
-        Thread.sleep(3000);
         // Hacemos click en el logout por que para casos posteriores no deberia estar
         // logueado
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("logoutBTN")));
         driver.findElement(By.id("logoutBTN")).click();
     }
 
     @Test
-    void UserValidation4() throws InterruptedException {
+    void UserValidation4() {
         driver.findElement(By.id("username")).clear();
         driver.findElement(By.id("password")).clear();
         driver.findElement(By.id("username")).sendKeys("lelapassano@gmail.com");
@@ -103,12 +105,11 @@ public class LogInTest {
         // Hacemos el sleep para darle tiempo al navegador para hacer la gestion de
         // inicio de sesion, de esta forma, cuando pasan los 3 seg, estamos seguros que
         // alguien esta logueado o no
-        Thread.sleep(3000);
+        assertDoesNotThrow(() -> {
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("logoutBTN")));
+        });
         // En caso que tire una excepcion, estariamos en una estado en el que no estamos
         // logueado
-        assertDoesNotThrow(() -> {
-            driver.findElement(By.id("logoutBTN"));
-        });
         // Compruebo que estemos en la pagina principal
         assertEquals(driver.getCurrentUrl(), "https://testappautomation.herokuapp.com/");
         // Al dar click en login, tenemos que verificar que la excepcion que ocurra es
@@ -121,7 +122,7 @@ public class LogInTest {
         assertDoesNotThrow(() -> {
             driver.findElement(By.id("profileIMG"));
         });
-        driver.findElement(By.id("profileTXT")).getText().equals("Welcome lelapassano!");
+        assertEquals(driver.findElement(By.id("profileTXT")).getText(), ("Welcome lelapassano!"));
         // Verifico que la imagen este a la derecha asi el texto se ve a la izquierda
         assertEquals(driver.findElement(By.id("profileIMG")).getCssValue("float"), "right");
     }

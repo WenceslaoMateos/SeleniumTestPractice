@@ -13,8 +13,8 @@ class AppTest {
 
     @BeforeAll
     static void setUp() {
-        driver = homenotlogged.getDriver();
         homenotlogged = new HomeNotLogged();
+        driver = homenotlogged.getDriver();
         homenotlogged.navigate("https://testappautomation.herokuapp.com");
     }
 
@@ -44,7 +44,7 @@ class AppTest {
     }
 
     @AfterAll
-    static void tearDown() throws InterruptedException {
+    static void tearDown() {
         driver.quit();
     }
 }

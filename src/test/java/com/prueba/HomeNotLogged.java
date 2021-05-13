@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class HomeNotLogged extends Base {
     private By logginbutton = By.id("loginBTN");
@@ -38,20 +39,18 @@ public class HomeNotLogged extends Base {
         assertEquals(this.findElement(By.tagName("footer")).getCssValue("bottom"), "0px");
     }
 
-    public WebElement getLogginbutton(){
+    public WebElement getLogginbutton() {
         return this.findElement(this.logginbutton);
     }
 
-    public void validateHyperlinks() throws InterruptedException {
+    public void validateHyperlinks() {
         this.navigate("https://testappautomation.herokuapp.com/forms/");
-        Thread.sleep(3000);
-        assertThrows(org.openqa.selenium.NoSuchElementException.class, () -> {
-            this.getDriver().findElement(By.id("BTNSubmit"));
+        assertThrows(org.openqa.selenium.TimeoutException.class, () -> {
+            this.wait.until(ExpectedConditions.presenceOfElementLocated(By.id("BTNSubmit")));
         });
         this.navigate("https://testappautomation.herokuapp.com/forms/");
-        Thread.sleep(3000);
-        assertThrows(org.openqa.selenium.NoSuchElementException.class, () -> {
-            this.getDriver().findElement(By.id("news"));
+        assertThrows(org.openqa.selenium.TimeoutException.class, () -> {
+            this.wait.until(ExpectedConditions.presenceOfElementLocated(By.id("news")));
         });
     }
 }
