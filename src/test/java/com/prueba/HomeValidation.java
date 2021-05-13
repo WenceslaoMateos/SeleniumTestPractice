@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
-class AppTest {
+class HomeValidation {
     private static WebDriver driver;
     private static HomeNotLogged homenotlogged;
 

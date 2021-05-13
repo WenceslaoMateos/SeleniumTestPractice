@@ -48,7 +48,7 @@ public class HomeNotLogged extends Base {
         assertThrows(org.openqa.selenium.TimeoutException.class, () -> {
             this.wait.until(ExpectedConditions.presenceOfElementLocated(By.id("BTNSubmit")));
         });
-        this.navigate("https://testappautomation.herokuapp.com/forms/");
+        this.navigate("https://testappautomation.herokuapp.com/lorem/");
         assertThrows(org.openqa.selenium.TimeoutException.class, () -> {
             this.wait.until(ExpectedConditions.presenceOfElementLocated(By.id("news")));
         });
