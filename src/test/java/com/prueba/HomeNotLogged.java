@@ -1,6 +1,7 @@
 package com.prueba;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.openqa.selenium.By;
@@ -39,5 +40,18 @@ public class HomeNotLogged extends Base {
 
     public WebElement getLogginbutton(){
         return this.findElement(this.logginbutton);
+    }
+
+    public void validateHyperlinks() throws InterruptedException {
+        this.navigate("https://testappautomation.herokuapp.com/forms/");
+        Thread.sleep(3000);
+        assertThrows(org.openqa.selenium.NoSuchElementException.class, () -> {
+            this.getDriver().findElement(By.id("BTNSubmit"));
+        });
+        this.navigate("https://testappautomation.herokuapp.com/forms/");
+        Thread.sleep(3000);
+        assertThrows(org.openqa.selenium.NoSuchElementException.class, () -> {
+            this.getDriver().findElement(By.id("news"));
+        });
     }
 }
